@@ -1,56 +1,59 @@
 <div class="form-container">
-  <h2>CO2 Emissions Prediction</h2>
+  <h2>Prédiction des Émissions de CO2</h2>
   <form [formGroup]="co2Form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline">
-      <mat-label>Energy Consumption (kWh)</mat-label>
-      <input matInput type="number" formControlName="energyConsumption" min="0">
-      <mat-error *ngIf="co2Form.get('energyConsumption')?.hasError('required')">
-        Energy Consumption is required
+      <mat-label>Date (YYYY-MM-DD)</mat-label>
+      <input matInput type="text" formControlName="date" placeholder="2023-01-01">
+      <mat-error *ngIf="co2Form.get('date')?.hasError('required')">
+        La date est requise
       </mat-error>
-      <mat-error *ngIf="co2Form.get('energyConsumption')?.hasError('min')">
-        Energy Consumption cannot be negative
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Production Rate (units/hour)</mat-label>
-      <input matInput type="number" formControlName="productionRate" min="0">
-      <mat-error *ngIf="co2Form.get('productionRate')?.hasError('required')">
-        Production Rate is required
-      </mat-error>
-      <mat-error *ngIf="co2Form.get('productionRate')?.hasError('min')">
-        Production Rate cannot be negative
+      <mat-error *ngIf="co2Form.get('date')?.hasError('pattern')">
+        La date doit être au format YYYY-MM-DD
       </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Machine Efficiency (%)</mat-label>
-      <input matInput type="number" formControlName="machineEfficiency" min="0" max="100">
-      <mat-error *ngIf="co2Form.get('machineEfficiency')?.hasError('required')">
-        Machine Efficiency is required
+      <mat-label>Émissions Totales (kg CO2)</mat-label>
+      <input matInput type="number" formControlName="total_emissions" min="0" step="0.01">
+      <mat-error *ngIf="co2Form.get('total_emissions')?.hasError('required')">
+        Les émissions totales sont requises
       </mat-error>
-      <mat-error *ngIf="co2Form.get('machineEfficiency')?.hasError('min')">
-        Machine Efficiency cannot be negative
-      </mat-error>
-      <mat-error *ngIf="co2Form.get('machineEfficiency')?.hasError('max')">
-        Machine Efficiency cannot exceed 100
+      <mat-error *ngIf="co2Form.get('total_emissions')?.hasError('min')">
+        Les émissions totales ne peuvent pas être négatives
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Fuel Type</mat-label>
-      <mat-select formControlName="fuelType">
-        <mat-option value="coal">Coal</mat-option>
-        <mat-option value="natural-gas">Natural Gas</mat-option>
-        <mat-option value="renewable">Renewable</mat-option>
-      </mat-select>
-      <mat-error *ngIf="co2Form.get('fuelType')?.hasError('required')">
-        Fuel Type is required
-      </mat-error>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="co2Form.invalid">
-      Predict CO2 Emissions
-    </button>
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="co2Form.invalid || isLoading">
+        Prédire les Émissions de CO2
+      </button>
+      <mat-spinner diameter="24" *ngIf="isLoading"></mat-spinner>
+    </div>
   </form>
+
+  <div class="prediction-result" *ngIf="prediction">
+    <h3>Résultat de la Prédiction</h3>
+    <p>Modèle: {{ prediction.model }}</p>
+    <p>Statut: {{ prediction.status }}</p>
+    <p>Unité: {{ prediction.unit }}</p>
+    <h4>Prévisions</h4>
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Prédiction (kg CO2)</th>
+          <th>Borne Inférieure (kg CO2)</th>
+          <th>Borne Supérieure (kg CO2)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of prediction.forecast">
+          <td>{{ entry.ds }}</td>
+          <td>{{ entry.yhat_rescaled | number:'1.2-2' }}</td>
+          <td>{{ entry.yhat_lower_rescaled | number:'1.2-2' }}</td>
+          <td>{{ entry.yhat_upper_rescaled | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
