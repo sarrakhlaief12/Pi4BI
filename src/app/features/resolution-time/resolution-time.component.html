@@ -1,0 +1,93 @@
+<div class="form-container">
+  <h2>Prédiction du Temps de Résolution</h2>
+  <form [formGroup]="resolutionForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Priorité</mat-label>
+      <mat-select formControlName="priorite">
+        <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+          {{ priority.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resolutionForm.get('priorite')?.hasError('required')">
+        La priorité est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Catégorie de Notification</mat-label>
+      <mat-select formControlName="categorie_notification">
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resolutionForm.get('categorie_notification')?.hasError('required')">
+        La catégorie de notification est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fabricant</mat-label>
+      <mat-select formControlName="Manufacturer">
+        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer">
+          {{ manufacturer }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resolutionForm.get('Manufacturer')?.hasError('required')">
+        Le fabricant est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Durée de Vie Estimée (années)</mat-label>
+      <input matInput type="number" formControlName="Estimated_Lifetime_Years" min="0" step="0.1">
+      <mat-error *ngIf="resolutionForm.get('Estimated_Lifetime_Years')?.hasError('required')">
+        La durée de vie estimée est requise
+      </mat-error>
+      <mat-error *ngIf="resolutionForm.get('Estimated_Lifetime_Years')?.hasError('min')">
+        La durée de vie estimée ne peut pas être négative
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mois</mat-label>
+      <mat-select formControlName="month">
+        <mat-option *ngFor="let month of months" [value]="month">
+          {{ month }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resolutionForm.get('month')?.hasError('required')">
+        Le mois est requis
+      </mat-error>
+      <mat-error *ngIf="resolutionForm.get('month')?.hasError('min') || resolutionForm.get('month')?.hasError('max')">
+        Le mois doit être entre 1 et 12
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Jour de la Semaine</mat-label>
+      <mat-select formControlName="weekday">
+        <mat-option *ngFor="let day of weekdays" [value]="day.value">
+          {{ day.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resolutionForm.get('weekday')?.hasError('required')">
+        Le jour de la semaine est requis
+      </mat-error>
+      <mat-error *ngIf="resolutionForm.get('weekday')?.hasError('min') || resolutionForm.get('weekday')?.hasError('max')">
+        Le jour de la semaine doit être entre 0 et 6
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="resolutionForm.invalid || isLoading">
+        Prédire le Temps de Résolution
+      </button>
+      <mat-spinner diameter="24" *ngIf="isLoading"></mat-spinner>
+    </div>
+  </form>
+
+  <div class="prediction-result" *ngIf="prediction">
+    <h3>Résultat de la Prédiction</h3>
+    <p>Temps de Résolution Estimé: {{ prediction.value | number:'1.2-2' }} {{ prediction.unit }}</p>
+  </div>
+</div>

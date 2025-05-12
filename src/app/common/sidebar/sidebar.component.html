@@ -1,0 +1,127 @@
+<div class="sidebar-area bg-white"
+     [ngClass]="{'active': isSidebarToggled}"
+     [class.component-dark-theme]="themeService.isDark()"
+     [class.dark-sidebar]="themeService.isSidebarDark()"
+     [class.right-sidebar]="themeService.isRightSidebar()"
+     [class.hide-sidebar]="themeService.isHideSidebar()"
+     [class.card-borderd-theme]="themeService.isCardBorder()"
+     [class.rtl-enabled]="themeService.isRTLEnabled()">
+     <div class="logo bg-white">
+         <a routerLink="/" class="d-flex align-items-center">
+             <img src="images/logo-icon.svg" alt="logo-icon">
+             <span class="fw-semibold">Daxa</span>
+         </a>
+     </div>
+     <div
+         (click)="toggle()"
+         class="burger-menu"
+         [ngClass]="{'active': isSidebarToggled}"
+     >
+         <span class="top-bar"></span>
+         <span class="middle-bar"></span>
+         <span class="bottom-bar"></span>
+     </div>
+     <ng-scrollbar visibility="hover">
+         <div class="sidebar-inner">
+             <div class="sidebar-menu">
+                 <mat-accordion>
+                     <span class="sub-title text-body">
+                         MAIN
+                     </span>
+                     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
+                         <mat-expansion-panel-header>
+                             <mat-panel-title>
+                                 <i class="material-symbols-outlined">
+                                     dashboard
+                                 </i>
+                                 <span class="title">
+                                     Dashboard
+                                 </span>
+                                 <span class="daxa-badge">
+                                     1
+                                 </span>
+                             </mat-panel-title>
+                         </mat-expansion-panel-header>
+                         <ul class="sidebar-sub-menu">
+                             <li class="sidemenu-item">
+                                 <a routerLink="/dashboard1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                     Main Dashboard
+                                 </a>
+                             </li>
+                         </ul>
+                     </mat-expansion-panel>
+                     
+                     <span class="sub-title text-body">
+                         MODELS
+                     </span>
+                     <a routerLink="/recommend" class="sidebar-menu-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                         <i class="material-symbols-outlined">
+                             recommend
+                         </i>
+                         <span class="title">
+                             Recommend
+                         </span>
+                    </a>
+                    
+                    <!-- New Prediction Section -->
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <i class="material-symbols-outlined">
+                                    analytics
+                                </i>
+                                <span class="title">
+                                    Prediction
+                                </span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="sidebar-sub-menu">
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/resolution-time" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Resolution Time
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/equipment-failure" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Equipment Failure
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/incident-count" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Incident Count
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/maintenance-alert" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Predict
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/co2-emissions" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    CO2 Emissions
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/predictions/co2-forecast" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    CO2 Forecast
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                     
+                     <span class="sub-title text-body">
+                         APPS
+                     </span>
+                     <a routerLink="/calendar" class="sidebar-menu-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                         <i class="material-symbols-outlined">
+                             calendar_today
+                         </i>
+                         <span class="title">
+                             Calendar
+                         </span>
+                     </a>
+                 </mat-accordion>
+             </div>
+         </div>
+     </ng-scrollbar>
+</div>

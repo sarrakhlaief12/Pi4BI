@@ -1,0 +1,140 @@
+<div class="form-container">
+  <h2>Prédiction des Émissions de CO2</h2>
+  <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Type d'Énergie</mat-label>
+      <mat-select formControlName="Energy_Type">
+        <mat-option *ngFor="let energy of energyTypes" [value]="energy">
+          {{ energy }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Energy_Type')?.hasError('required')">
+        Le type d'énergie est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cycle de Maintenance</mat-label>
+      <mat-select formControlName="Maintenance_Cycle">
+        <mat-option *ngFor="let cycle of maintenanceCycles" [value]="cycle">
+          {{ cycle }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Maintenance_Cycle')?.hasError('required')">
+        Le cycle de maintenance est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Durée de Vie Estimée (années)</mat-label>
+      <input matInput type="number" formControlName="Estimated_Lifetime_Years" min="0" step="0.1">
+      <mat-error *ngIf="maintenanceForm.get('Estimated_Lifetime_Years')?.hasError('required')">
+        La durée de vie estimée est requise
+      </mat-error>
+      <mat-error *ngIf="maintenanceForm.get('Estimated_Lifetime_Years')?.hasError('min')">
+        La durée de vie estimée ne peut pas être négative
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Catégorie d'Équipement</mat-label>
+      <mat-select formControlName="equipement_category">
+        <mat-option *ngFor="let category of equipmentCategories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('equipement_category')?.hasError('required')">
+        La catégorie d'équipement est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fabricant</mat-label>
+      <mat-select formControlName="Manufacturer">
+        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer">
+          {{ manufacturer }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Manufacturer')?.hasError('required')">
+        Le fabricant est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type de Transport</mat-label>
+      <mat-select formControlName="Transport_Type">
+        <mat-option *ngFor="let transport of transportTypes" [value]="transport">
+          {{ transport }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Transport_Type')?.hasError('required')">
+        Le type de transport est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Certifications Environnementales</mat-label>
+      <mat-select formControlName="Environmental_Certifications">
+        <mat-option *ngFor="let cert of environmentalCertifications" [value]="cert">
+          {{ cert }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Environmental_Certifications')?.hasError('required')">
+        Les certifications environnementales sont requises
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Programme de Durabilité</mat-label>
+      <mat-select formControlName="Sustainability_Program">
+        <mat-option *ngFor="let program of sustainabilityPrograms" [value]="program">
+          {{ program }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Sustainability_Program')?.hasError('required')">
+        Le programme de durabilité est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Priorité</mat-label>
+      <mat-select formControlName="Priorite">
+        <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+          {{ priority.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceForm.get('Priorite')?.hasError('required')">
+        La priorité est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Catégorie de Notification</mat-label>
+      <mat-select formControlName="notification_categorie">
+        <mat-option *ngFor="let category of notificationCategories" [value]="category">
+          {{ category || 'Aucune' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Émissions de CO2 (kg, mises à l'échelle)</mat-label>
+      <input matInput type="number" formControlName="CO2_Emissions_kg_scaled" min="0" step="0.01">
+      <mat-error *ngIf="maintenanceForm.get('CO2_Emissions_kg_scaled')?.hasError('min')">
+        Les émissions de CO2 ne peuvent pas être négatives
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="maintenanceForm.invalid || isLoading">
+        Prédire les Émissions de CO2
+      </button>
+      <mat-spinner diameter="24" *ngIf="isLoading"></mat-spinner>
+    </div>
+  </form>
+
+  <div class="prediction-result" *ngIf="prediction">
+    <h3>Résultat de la Prédiction</h3>
+    <p>Prédiction: {{ prediction.prediction | number:'1.2-2' }} {{ prediction.unit }}</p>
+  </div>
+</div>

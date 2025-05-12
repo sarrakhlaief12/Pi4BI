@@ -1,0 +1,54 @@
+<div class="form-container">
+  <h2>Prédiction de la Criticité des Incidents</h2>
+  <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="Category">
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="incidentForm.get('Category')?.hasError('required')">
+        La catégorie est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type d'Énergie</mat-label>
+      <mat-select formControlName="Energy_Type">
+        <mat-option *ngFor="let energy of energyTypes" [value]="energy">
+          {{ energy }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="incidentForm.get('Energy_Type')?.hasError('required')">
+        Le type d'énergie est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fréquence de Maintenance</mat-label>
+      <mat-select formControlName="Maintenance_Frequency">
+        <mat-option *ngFor="let frequency of maintenanceFrequencies" [value]="frequency">
+          {{ frequency }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="incidentForm.get('Maintenance_Frequency')?.hasError('required')">
+        La fréquence de maintenance est requise
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="incidentForm.invalid || isLoading">
+        Prédire la Criticité
+      </button>
+      <mat-spinner diameter="24" *ngIf="isLoading"></mat-spinner>
+    </div>
+  </form>
+
+  <div class="prediction-result" *ngIf="prediction">
+    <h3>Résultat de la Prédiction</h3>
+    <p>
+      Prédiction: {{ prediction.prediction === 1 ? 'Critique/Urgent' : 'Non-Critique' }}
+    </p>
+  </div>
+</div>
